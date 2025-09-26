@@ -1,0 +1,12 @@
+body
+{
+    background-color: lightgrey;
+}
+th {
+    background-color: hotpink;
+}
+table th,tr,td{
+    border:1px;
+    border-style: solid;
+    spac
+}
