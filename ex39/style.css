@@ -1,0 +1,19 @@
+#customer {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#customer td, #customer th {
+  border: 1px solid #20c670;
+  padding: 8px;
+}
+#customer th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #508251;
+  color: white;
+}
+#customer tr.alt td{
+    background-color: #4CAF50;
+}
