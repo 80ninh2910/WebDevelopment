@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title> Registration Form-An Ninh</title>
+        <style>
+            body{
+                background-color:aquamarine;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="text-align: center;">
+            <img src="images/Jackson.gif" align="center">
+        </div>
+        <h1 align="center">Registration Form</h1>
+        <p align="center">Registration your Jackson Electronics product here </p>
+        <table align="center">
+            <tr>
+                <td><label for="fname">First Name:</label></td>
+                <td><input type="text" id="fname" name="fname"></td>
+                <td><label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname"></td>
+            </tr>
+            <tr>
+                <td><label for="address1">Address #1:</label></td>
+                <td colspan="3"><input type="text" id="address1" name="address1"></td>
+            </tr>
+            <tr>
+                <td><label for="address2">Address #2:</label></td>
+                <td colspan="3"><input type="text" id="address2" name="address2"></td>
+            </tr>
+            <tr>
+                <td><label for="city">City:</label></td>
+                <td><input type="text" id="city" name="city"><label for="state">State:</label></td>
+                <td><input type="text" id="state" name="state"></td>
+                <td><label for="zip">Zip:</label></td>
+                <td><input type="text" id="zip" name="zip"></td>
+            </tr>
+            <tr>
+                <td><label for="country">Country:</label></td>
+                <td colspan="3"><input type="text" id="country" name="country" value="United States"></td>
+            </tr>
+            <tr><td colspan="6"><hr></td></tr>
+            <tr>
+                <td><label for="product">Product:</label></td>
+                <td><select id="product" name="product">
+                    <option value="smartphone">Smart Phone</option>
+                    <option value="tablet">Tablet</option>
+                    <option value="laptop">Laptop</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td><label>Date Purchased:</label></td>
+                <td><input type="date" id="date" name="date"></td>
+            </tr>
+            <tr>
+                <td><label for="serial">Serial #:</label></td>
+                <td><input type="text" id="serial" name="serial"></td>
+            </tr>
+            <tr>
+                <td>Used for:</td>
+                <td>
+                    <input type="radio" id="business" name="usage" value="business">
+                    <label for="business">Business</label>
+                    <input type="radio" id="home" name="usage" value="personal">
+                    <label for="home">Home</label><br>
+                    <input type="radio" id="government" name="usage" value="government">
+                    <label for="government">Goverment</label>
+                </td>
+                <td>
+                    <input type="radio" id="education" name="usage" value="education">
+                    <label for="education">Education Institution</label>
+                    <input type="radio" id="other" name="usage" value="other">
+                    <label for="other">Other</label>
+                
+                </td>
+                
+            </tr>
+            <tr><td colspan="6"><hr></td></tr>
+            <tr>
+                <td><label for="comments">Comments:</label></td>
+                <td><textarea id="comments" name="comments" rows="4" cols="50"></textarea></td>
+            </tr>
+            <tr rowspan="5">
+                <td colspan="6" style="text-align: center;">
+                    <button type="submit" id="submit" name="submit">Click to register</button>
+                    <button type="reset" id="reset" name="reset">Click to cancel</button>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -14,6 +14,8 @@
   background-color: #508251;
   color: white;
 }
+
 #customer tr.alt td{
     background-color: #4CAF50;
+    color: white;
 }

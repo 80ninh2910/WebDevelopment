@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Login</title>
+        <style>
+            .login {
+                display: flex;
+                justify-content: center;  
+                align-items: center;      
+                border:2px color yellow      
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+        <h1 class="login">Amazon</h1>
+        <form class="login"
+        name="login"
+        action="processLogin.html"
+        method="post">
+            <table class="login">
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="username" id="username"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input type="password" name="password" id="password">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit" name="submit" id="submit">Login</button></td>
+                </tr>
+            </table>
+        </form>
+        </div>
+    </body>
+</html>
