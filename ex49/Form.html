@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>
+            FORM-NINH
+        </title>
+        <style>
+            body{
+                background-color:antiquewhite;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="color:brown"> Online Classifieds Search Form </h1>
+        <hr>
+        <form>
+            <h3> 1) Search for classified in the following sections</h3>
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" id="Employment" name="section">
+                        <label for="Employment"> Employment</label><br>
+                    </td>
+                    <td>
+                        <input type="radio" id="Housing" name="section">
+                        <label for="Housing"> Housing</label><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="For Sale" name="section">
+                        <label for="For Sale"> For Sale</label><br>
+                    </td>
+                    <td>
+                        <input type="radio" id="Personal" name="section">
+                        <label for="Personal"> Personal</label><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="Miscellaneous" name="section">
+                        <label for="Miscellaneous"> Miscellaneous</label><br>
+                    </td>
+                    <td>
+                        <input type="radio" id="All" name="section">
+                        <label for="All"> All of the Above</label><br>
+                    </td>
+                </tr>
+            </table>
+            <h3> 2) Search the following publications</h3>
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Midwest times" name="publication">
+                        <label for="Midwest times"> Midwest times</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Modern News" name="publication">
+                        <label for="Modern News"> Modern News</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Employment today" name="publication">
+                        <label for="Employment today"> Employment today</label><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Great Lakes Classifieds" name="publication">
+                        <label for="Great Lakes Classifieds"> Great Lakes Classifieds</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Middleton Daily" name="publication">
+                        <label for="Middleton Daily"> Middleton Daily</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Cashtown Daily News" name="publication">
+                        <label for="Cashtown Daily News"> Cashtown Daily News</label>
+                    </td>
+                </tr>
+            </table>
+            <h3><label for="fromDate"> 3) From <input type=date id="fromDate" name="fromDate"> to <input type=date id="toDate" name="toDate"></label></h3>
+            <h3> <label for="keywords"> 4) Enter a few keywords to describe the classified.</label></h3>
+            <input type="text" id="keywords" name="keywords" style="width:700px;">
+            <h3> 5) Click one of the options below:</h3>
+            <button type="get" id="search" name="search"><img src="images/Search.gif"></button>
+            <button type="reset" id="clear" name="clear"><img src="images/Cancel.gif"></button>
+            <button><img src="images/Help.gif"></button>
+        </form>
+    </body>
+</html>
