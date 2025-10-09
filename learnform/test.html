@@ -1,0 +1,45 @@
+<head>
+    <script>
+        function update_name(){
+            myform.flname.value=myform.fname.value + " " + myform.mname.value + " " + myform.lname.value
+            fname_td=document.getElementById("fname_td")
+            fname_td.innerText=myform.flname.value
+        }
+    </script>
+</head>
+<body>
+    <form name="myform">
+        <table>
+            <tr>
+                <td>First name:</td>
+                <tD>
+                    <input type="text" name="fname" id="fname" oninput="update_name()">
+                </tD>
+            </tr>
+            <tr>
+                <td>Middle name:</td>
+                <tD>
+                    <input type="text" name="mname" id="mname" oninput="update_name()">
+                </tD>
+            </tr>
+            <tr>
+                <td>Last name:</td>
+                <tD>
+                    <input type="text" name="lname" id="lname" oninput="update_name()">
+                </tD>
+            </tr>
+            <tr>
+                <td>Full name:</td>
+                <td>
+                    <input type="text" name="flname" id="flname">
+                </td>
+            </tr>
+            <tr>
+                <td>full</td>
+                <td id="fname_td">
+
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>

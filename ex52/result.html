@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Result</title>
+    </head>
+    <body>
+        <h1>Submitted Information</h1>
+        <div id="submitted-info" class="info"></div>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            
+            const fname= params.get("fname");
+            const email= params.get("email");
+            const board= params.get("board");
+            const title= params.get("title");
+            const content= params.get("content");
+
+            document.getElementById("submitted-info").innerHTML = `
+                <p><strong>Full Name:</strong> ${fname}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Send to:</strong> ${board}</p>
+                <p><strong>Title:</strong> ${title}</p>
+                <p><strong>Content:</strong> ${content}</p>
+            `;
+        </script>
+    </body>
+</html>
