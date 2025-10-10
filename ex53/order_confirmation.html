@@ -1,0 +1,112 @@
+<html>
+<head>
+    <title>Order Confirmation - Ninh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .back-btn {
+            margin-top: 20px;
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background-color: #ffb000;
+        }
+    </style>
+</head>
+<body>
+    <h2>Order Confirmation</h2>
+    <table>
+        <tr>
+            <th>Part Number</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Item Table</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+        </tr>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+
+            const qtyMouse = parseFloat(params.get("quantity_mouse")) || 0;
+            const qtyKeyboard = parseFloat(params.get("quantity_keyboard")) || 0;
+            const qtyUSB = parseFloat(params.get("quantity_usb")) || 0;
+
+            const itemMouse = params.get("item_table_mouse") || "";
+            const itemKeyboard = params.get("item_table_keyboard") || "";
+            const itemUSB = params.get("item_table_usb") || "";
+
+            const total = params.get("total") || "0$";
+
+            const priceMouse = 19.95;
+            const priceKeyboard = 29.95;
+            const priceUSB = 39.95;
+
+            const subMouse = (qtyMouse * priceMouse).toFixed(2);
+            const subKeyboard = (qtyKeyboard * priceKeyboard).toFixed(2);
+            const subUSB = (qtyUSB * priceUSB).toFixed(2);
+
+            document.write(`
+                <tr>
+                    <td>C112</td>
+                    <td>Mouse</td>
+                    <td>${qtyMouse}</td>
+                    <td>${itemMouse}</td>
+                    <td>$${priceMouse.toFixed(2)}</td>
+                    <td>$${subMouse}</td>
+                </tr>
+                <tr>
+                    <td>B123</td>
+                    <td>Keyboard US</td>
+                    <td>${qtyKeyboard}</td>
+                    <td>${itemKeyboard}</td>
+                    <td>$${priceKeyboard.toFixed(2)}</td>
+                    <td>$${subKeyboard}</td>
+                </tr>
+                <tr>
+                    <td>U125</td>
+                    <td>USB King Max</td>
+                    <td>${qtyUSB}</td>
+                    <td>${itemUSB}</td>
+                    <td>$${priceUSB.toFixed(2)}</td>
+                    <td>$${subUSB}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="total">Total:</td>
+                    <td class="total">${total}</td>
+                </tr>
+            `);
+        </script>
+    </table>
+
+    <button class="back-btn" onclick="window.history.back()">Back to Order</button>
+</body>
+</html>

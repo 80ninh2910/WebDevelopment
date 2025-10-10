@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Order Form-Ninh</title>
+        <style>
+            button{
+                background-color: rgb(221, 234, 42);
+                color: white;
+                border-radius: 5px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="get" action="order_confirmation.html">
+            <div>
+            <table width="100%" border="0">
+                <tr>
+                    <th>Part Number</th>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Item Table</th>
+                </tr>
+                <tr>
+                    <td>C112</td>
+                    <td>Mouse</td>
+                    <td>19.95$</td>
+                    <td><input type="number" id="quantity_mouse" name="quantity_mouse" value="0" min="0" oninput="calculateTotal()"></td>
+                    <td><input type="text" name="item_table_mouse" ></td>
+                </tr>
+                <tr>
+                    <td>B123</td>
+                    <td>Keyboard US</td>
+                    <td>29.95$</td>
+                    <td><input type="number" id="quantity_keyboard" name="quantity_keyboard" value="0" min="0" oninput="calculateTotal()"></td>
+                    <td><input type="text" name="item_table_keyboard" ></td>
+                </tr>
+                <tr>
+                    <td>U125</td>
+                    <td>USB King Max</td>
+                    <td>39.95$</td>
+                    <td><input type="number" id="quantity_usb" name="quantity_usb" value="0" min="0" oninput="calculateTotal()"></td>
+                    <td><input type="text" name="item_table_usb" value="USB King Max"></td>
+                </tr>
+            </table>
+            </div>
+            <div style="text-align: right; right-margin: 50px; margin-top: 20px;">
+                Total: <input type="text" name="total" id="total" >
+                <br><button type="submit">Sum</button>
+            </div>
+            <script>
+                function calculateTotal() {
+                    let qtym=parseFloat(document.getElementById("quantity_mouse").value) || 0;
+                    let qtyk=parseFloat(document.getElementById("quantity_keyboard").value) || 0;
+                    let qtyu=parseFloat(document.getElementById("quantity_usb").value) || 0;
+                    let total = (qtym * 19.95) + (qtyk * 29.95) + (qtyu * 39.95);
+                    document.getElementById("total").value = total.toFixed(2) + "$";
+                }
+                    
+            </script>
+        </form>
+    </body>
+</html>
