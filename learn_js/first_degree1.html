@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>First Degree</title>
+        <script type="text/javascript">
+            function update_result()
+            {
+                a=eval(myform.a_coefficient.value)
+                b=eval(myform.b_coefficient.value)
+                result_td=document.getElementById("result_td") 
+                result=''
+                if (a==0 && b==0)
+            {result='Infinite solutions'}
+                else if (a==0 && b!=0)
+            {result='No solutions'}
+                else
+            {result='x=' + (-b/a)}
+                result_td.innerHTML=`${result}`
+            }
+            function do_clear()
+            {
+                document.getElementById("result_td").innerHTML=""
+                myform.a_coefficient.focus()
+            }
+            function open_help(){
+                window.open("https://uel.edu.vn","_self")
+            }
+        </script>
+    </head>
+    <body>
+        <form name="myform">
+            <table>
+               <tr>
+                   <td>A coeff:</td>
+                   <td><input type="text" name="a_coefficient" id="a_coefficient" /></td>
+               </tr>
+               <tr>
+                   <td>B coeff:</td>
+                   <td><input type="text" name="b_coefficient" id="b_coefficient"/></td>
+               </tr>
+               <tr>
+                   <td>Result:</td>
+                   <td id="result_td">
+                   </td>
+               </tr>
+               <tr>
+                   <td>&nbsp;</td>
+                   <td>
+                       <button type="button" onclick="update_result()">Calculate</button>
+                       <button type="reset" onclick="do_clear()">Clear</button>
+                       <button type="button" onclick="open_help()">Help</button>
+                   </td>
+               </tr>
+            </table>
+        </form>
+    </body>
+</html>
