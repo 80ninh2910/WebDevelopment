@@ -7,7 +7,12 @@
                 fib=find_fib(myform.n.value)
                 result=document.getElementById("result")
                 result.innerHTML="<p>"+fib+"</p>"
+                invoke_list_fib(myform.n.value, div_list_fib)
             }
+            function set_clock(){
+                t=new Date()
+                td=document.getElementById("td_digital_clock")
+                td.innerHTML="<p style='color:blue'>"+t.toLocaleTimeString()+"</p>"}
         </script>
     </head>
     <body>
@@ -23,6 +28,7 @@
                         <td></td>
                         <td>
                             <button type="button" onclick="call_fib()">FIND THE FIBONACCI NUMBER</button>
+                            <button type="button" onclick="invoke_fib(myform.n.value, result)">FIND 2</button>
                         </td>
                     </tr>
                     <tr>
@@ -30,11 +36,18 @@
                         <td id="result"></td>
                     </tr>
                     <tr>
+                        <td>List</td>
+                        <td><div id="div_list_fib" style="height: 150px; background-color: rgb(238, 241, 243); overflow: scroll;"></div></td>
+                    </tr>
+                    <tr>
                         <td colspan="2" id="td_digital_clock">My clock</td>
                     </tr>
                 </table>
             </fieldset>
         </form>
+        <script type="text/javascript">
+            setInterval(set_clock, 1000);
+        </script>
         <div onclick="javascript:this.style='background-color:yellow'">
             Click me to change my background color
 
