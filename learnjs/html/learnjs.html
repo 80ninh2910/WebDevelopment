@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>LearnJS-Ninh</title>
+        <script src="../js/mainjs.js"></script>
+        <script type="text/javascript">
+            function call_fib(){
+                fib=find_fib(myform.n.value)
+                result=document.getElementById("result")
+                result.innerHTML="<p>"+fib+"</p>"
+            }
+        </script>
+    </head>
+    <body>
+        <form name="myform">
+            <fieldset>
+                <legend> Fibonacci number</legend>
+                <table>
+                    <tr>
+                        <td>N:</td>
+                        <td><input type="text" id="n" name="n"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" onclick="call_fib()">FIND THE FIBONACCI NUMBER</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Result:</td>
+                        <td id="result"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" id="td_digital_clock">My clock</td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+        <div onclick="javascript:this.style='background-color:yellow'">
+            Click me to change my background color
+
+        </div>
+    </body>
+</html>
