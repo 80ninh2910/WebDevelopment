@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>Dom2-Ninh</title>
+    </head>
+    <body>
+        <form name="myform">
+            <fieldset>
+                <legend>Information</legend>
+                <table>
+                    <tr>
+                        <td><label for="id">ID:</label></td>
+                        <td><input type="text" id="id" name="id"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="name">Name:</label></td>
+                        <td><input type="text" id="name" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td>Type:</td>
+                        <td>
+                            <input type="radio" id="VIP" name="type">
+                            <label for="VIP">VIP</label>
+                            <input type="radio" id="Normal" name="type">
+                            <label for="Normal">Normal</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" onclick="create()">Create</button>
+                            <button type="reset">Clear</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>List</legend>
+                <table border="1" width="1000px">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list">
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+        <script type="text/javascript">
+            function create(){
+                id=document.getElementById("id").value
+                name=document.getElementById("name").value
+
+                if(document.getElementById("VIP").checked){
+                    type="VIP"
+                    color="background-color: yellow; font-weight: bold;"
+                }
+                else if(document.getElementById("Normal").checked){
+                    type="Normal"
+                    color="background-color: white;"
+                }
+                list=document.getElementById("list")
+                ///createrow
+                row=document.createElement("tr")
+                list.appendChild(row)
+                //create column
+                td_id=document.createElement("td")
+                td_id.innerText=id
+                row.appendChild(td_id)
+
+                td_name=document.createElement("td")
+                td_name.innerText=name
+                row.appendChild(td_name)
+
+                td_type=document.createElement("td")
+                td_type.style=color
+                td_type.innerText=type
+                row.appendChild(td_type)
+            }
+        </script>
+    </body>
+</html>

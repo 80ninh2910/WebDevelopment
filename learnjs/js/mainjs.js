@@ -17,3 +17,14 @@ function invoke_list_fib(n,panel){
         panel.innerHTML+=p;
     }
 }
+function get_detail_product(n){
+    //alert(my_form.item_input.value)
+    
+    parts=n.split(";");
+    id=parts[0];
+    name=parts[1];
+    price=parts[2];
+    td_id.innerText=id;
+    td_name.innerText=name;
+    td_price.innerText=price;
+}

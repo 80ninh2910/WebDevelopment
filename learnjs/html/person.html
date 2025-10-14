@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>Person Information</title>
+        <script type="text/javascript">
+            var person={
+                id:"CUS01",
+                fname:"John",
+                lname:"Wick",
+                Birthday: new Date("1964-09-02"),
+                Fullname: function(){
+                    return this.fname + " " + this.lname;
+                },
+                Age: function(){
+                    var today=new Date();
+                    var age= today.getFullYear() - this.Birthday.getFullYear();
+                    var m=today.getMonth() - this.Birthday.getMonth();
+                    if(m<0 || (m===0 && today.getDate() < this.Birthday.getDate())){
+                        age--;
+                    }
+                    return age;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form>
+            <table border="1">
+                <tr>
+                    <td>ID:</td>
+                    <td id="id"></td>
+                </tr>
+                <tr>
+                    <td>First name:</td>
+                    <td id="fname"></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td id="lname"></td>
+                </tr>
+                <tr>
+                    <td>Birthday:</td>
+                    <td id="Birthday"></td>
+                </tr>
+                <tr>
+                    <td>Full name:</td>
+                    <td id="fullname"></td>
+                </tr>
+                <tr>
+                    <td>Age:</td>
+                    <td id="age"></td>
+                </tr>
+            </table>
+            <script>
+                id.innerText=person.id;
+                fname.innerText=person.fname;   
+                lname.innerText=person.lname;
+                Birthday.innerText=person.Birthday.toDateString();
+                fullname.innerText=person.Fullname();
+                age.innerText=person.Age();
+            </script>
+
+        </form>
+    </body>
+</html>

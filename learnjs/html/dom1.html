@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Dom1-Ninh</title>
+    </head>
+    <body>
+        <form name="myform">
+            <input type="text" id="content" name="content">
+            <br/>
+            <button type="button" onclick="creatediv()">Create Div</button>
+            <br/>
+            <div id="mydiv"></div>
+        <script type="text/javascript">
+            function creatediv(){
+                content=document.getElementById("content").value
+                mydiv=document.getElementById("mydiv")
+                p_tag=document.createElement("p")
+                p_tag.innerText=content
+                mydiv.appendChild(p_tag)
+            }
+        </script>
+        </form>
+    </body>
+</html>
