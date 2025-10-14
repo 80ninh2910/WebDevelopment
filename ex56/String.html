@@ -1,0 +1,123 @@
+<html>
+    <head>
+        <title>String-ninh</title>
+        <style>
+            table{
+                width:80%;
+                margin:30px auto;
+                border-collapse: collapse;
+                text-align:center;
+                box-shadow: 0 0 5px #ccc;
+            }
+            td, th {
+            padding: 10px;
+            border: 1px solid #ccc;
+            }
+            textarea{
+                width: 100%;
+                height: 150px;
+            }
+            button {
+            width: 100%;
+            padding: 5px;
+            cursor: pointer;
+            }
+        
+        </style>
+        
+    </head>
+    <body>
+        <h1>Using String Processing functions</h1>
+        <table>
+            <tr>
+                <th>Input Data:</th>
+                <th>Result:</th>
+            </tr>
+            <tr>
+                <td><textarea id="input" name="input"></textarea></td>
+                <td><textarea id="result" name="result" readonly></textarea></td>
+            </tr>
+            <tr>
+                <td><button type=button onclick="Enterdata()">Enter Data</button></td>
+                <td><button type="button" onclick="Countupper()">count the number of uppercase characters</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="upper()">Uppercase Display</button></td>
+                <td><button onclick="onewordperline()">Output one word per line</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="lower()">Lowercase Display</button></td>
+                <td><button onclick="count()">Word count</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="Countlower()">Count the number of lowercase characters</button></td>
+                <td><button onclick="printVowelsConsonants()">print vowels, consonants</button></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" onclick="website()">W3C'S String Processing Website</button>
+                </td>  
+            </tr>
+        </table>
+        <script type="text/javascript">
+            
+            const input=document.getElementById("input");
+            const result=document.getElementById("result");
+            
+            function Enterdata(){
+                result.value=input.value;
+            }
+            function Countupper(){
+                let count=0
+                for (i=0; i<input.value.length; i++){
+                    if(input.value[i]>='A'&& input.value[i]<='Z'){
+                        count++;    
+                    }
+                }
+                result.value="The number of uppercase characters is: " + count;
+            }
+            function website(){
+                window.open("https://www.w3.org/", "_self");
+            }
+            function upper(){
+                result.value=input.value.toUpperCase();
+            }
+            function lower(){
+                result.value=input.value.toLowerCase();
+            }
+            function Countlower(){
+                let count=0
+                for (i=0; i<input.value.length; i++){
+                    if(input.value[i]>='a'&& input.value[i]<='z'){
+                        count++;    
+                    }
+                }
+                result.value="The number of lowercase characters is: " + count;
+            }
+            function onewordperline(){
+                words=input.value.split(" ");
+                result.value=words.join("\n")
+            }
+            function count(){
+                words=input.value.split(" ");
+                result.value="The number of words is: " + words.length;
+            }
+            function printVowelsConsonants(){
+                let vowels="";
+                let consonants="";
+                for (i=0; i<input.value.length; i++){
+                    let ch=input.value[i].toLowerCase();
+                    if ((ch>='a' && ch<='z') || (ch>='A' && ch<='Z')){
+                        if (ch=='a'|| ch=='e'|| ch=='i'|| ch=='o'|| ch=='u'){
+                            vowels+=input.value[i];
+                        }
+                        else{
+                            consonants+=input.value[i];
+                        }
+                    }
+                }
+                result.value="Vowels: " + vowels + "\nConsonants: " + consonants;
+            }
+        </script>
+    </body>
+</html>
