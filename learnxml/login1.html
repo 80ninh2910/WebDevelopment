@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <title>Login - Ninh</title>
+        <style type="text/css">
+            table{
+                margin: 10px auto;
+            }
+            fieldset{
+                width: 300px;
+                margin: 20px auto;
+            }
+        </style>
+        <script>
+            accounts=[
+                {"user":"admin",
+                    "password":"123"
+                }
+                ,
+                {"user":"employee",
+                    "password":"456"
+                },
+            ]
+        </script>
+    </head>
+    <body>
+        <form name="my_form">
+        <fieldset>
+            <legend>Login ABC System:</legend>
+            <table>
+                <tr>
+                    <td><label for="user_name">User:</label></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="user_name" id="user_name"/></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                </tr>
+                <tr>
+                    <td><input type="password" name="password" id="password"/></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="save" name="save" onclick="save()">
+                        <label for="save">Save Information</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onclick="login()">Login</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        </form>
+        <script>
+            function login(){
+                uid=my_form.user_name.value
+                pwd=my_form.password.value
+                login_ac=null
+                for(i=0;i<accounts.length;i++){
+                    ac=accounts[i]
+                    if(ac.user==uid && ac.password==pwd){
+                        login_ac=ac
+                        break
+                    }
+                }
+                if (login_ac==null){
+                    alert("Login failed")
+                    my_form.user_name.value=""
+                    my_form.password.value=""
+                    my_form.user_name.focus()
+                }
+                else{
+                    alert("Login successful: " + login_ac.user)
+                }
+            }
+        </script>
+    </body>
+</html>

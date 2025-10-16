@@ -67,6 +67,7 @@
             function Enterdata(){
                 result.value=input.value;
             }
+
             function Countupper(){
                 let count=0
                 for (i=0; i<input.value.length; i++){
@@ -76,15 +77,19 @@
                 }
                 result.value="The number of uppercase characters is: " + count;
             }
+
             function website(){
                 window.open("https://www.w3.org/", "_self");
             }
+
             function upper(){
                 result.value=input.value.toUpperCase();
             }
+
             function lower(){
                 result.value=input.value.toLowerCase();
             }
+
             function Countlower(){
                 let count=0
                 for (i=0; i<input.value.length; i++){
@@ -94,14 +99,17 @@
                 }
                 result.value="The number of lowercase characters is: " + count;
             }
+
             function onewordperline(){
                 words=input.value.split(" ");
                 result.value=words.join("\n")
             }
+
             function count(){
                 words=input.value.split(" ");
                 result.value="The number of words is: " + words.length;
             }
+            
             function printVowelsConsonants(){
                 let vowels="";
                 let consonants="";

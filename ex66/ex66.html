@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>Ex66-Ninh</title>
+        <script type="text/javascript">
+            var xhr=new XMLHttpRequest();
+            xhr.open("GET","xml/dataset.xml",true);
+            xhr.send();
+            xhr.onreadystatechange=function(){
+                if (xhr.readyState==4 && xhr.status==200)
+                {
+                    var xmlDoc=xhr.responseXML;
+                    var id=xmlDoc.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+                    var name=xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                    var birthday=xmlDoc.getElementsByTagName("birthday")[0].childNodes[0].nodeValue;
+                    var gender=xmlDoc.getElementsByTagName("gender")[0].childNodes[0].nodeValue;
+                    tdid.innerText=id;
+                    tdname.innerText=name;
+                    tdbirthday.innerText=birthday;
+                    tdgender.innerText=gender;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <table border="1" id="table">
+            <tr>
+                <td>ID</td>
+                <td id="tdid"></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id="tdname"></td>
+            </tr>
+            <tr>
+                <td>Birthday</td>
+                <td id="tdbirthday"></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td id="tdgender"></td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <title>Dom-Ninh</title>
+    </head>
+    <style>
+        table{
+            width:80%;
+            margin:30px auto;
+            border-collapse: collapse;
+            text-align:center;
+        }
+        tr,th{
+            padding:10px;
+        }
+        caption{
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        button{
+            
+            padding:5px;
+            cursor:pointer;
+            width:50%;
+        }
+    </style>
+    <script type="text/javascript">
+        dataset=[
+            {
+                ID:'P01',
+                Name:'Coca Cola',
+                Quantity:5,
+                Price:1000,
+                Photo:"Coca.png"
+            },
+            {
+                ID:'P02',
+                Name:'Pepsi',
+                Quantity:25,
+                Price:1050,
+                Photo:"Pepsi.png"
+            },
+            {
+                ID:'P03',
+                Name:'Fanta',
+                Quantity:54,
+                Price:500,
+                Photo:"Fanta.jpg"
+            },
+            {
+                ID:'P04',
+                Name:'Sprite',
+                Quantity:578,
+                Price:600,
+                Photo:"Sprite.png"
+            },
+            {
+                ID:'P05',
+                Name:'Monster',
+                Quantity:556,
+                Price:800,
+                Photo:"Monster.png"
+            }
+        ]
+    </script>
+    <body>
+        <table border="1">
+            <caption>Product List</caption>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Photo</th>
+            </tr>
+            </thead>
+            <tbody id="productTableBody">
+            </tbody>
+        </table>
+        <script type="text/javascript">
+            const table=document.getElementById("productTableBody");
+            for (i=0;i<dataset.length;i++) {
+                item=dataset[i];
+                id=item.ID;
+                name=item.Name;
+                quantity=item.Quantity;
+                price=item.Price;
+                photo=item.Photo;
+                row=document.createElement("tr");
+                table.appendChild(row);
+
+                td_id=document.createElement("td");
+                td_id.innerText=id;
+                row.appendChild(td_id);
+
+                td_name=document.createElement("td");
+                td_name.innerText=name;
+                row.appendChild(td_name);
+
+                td_quantity=document.createElement("td");
+                td_quantity.innerText=quantity;
+                row.appendChild(td_quantity);
+
+                td_price=document.createElement("td");
+                td_price.innerText=price;
+                row.appendChild(td_price);
+
+                td_photo=document.createElement("td");
+                td_photo.innerHTML="<img src='../assets/"+photo+"' width='50' height='50'>";
+                //img=document.createElement("img");
+                //img.setAttribute("src","../assets/"+photo);
+                //td_photo.appendChild(img);
+                row.appendChild(td_photo);
+
+                td_action=document.createElement("td");
+                row.appendChild(td_action);
+
+                button_delete=document.createElement("button");
+                button_delete.innerText="Delete";
+                button_delete.onclick=function(){
+                    table.removeChild(this.parentElement.parentElement);
+                }  
+                td_action.appendChild(button_delete);
+
+                button_detail=document.createElement("button");
+                button_detail.innerText="Detail";
+                button_detail.onclick=function(){
+                    json=JSON.stringify(this.item);
+                    
+
+                }
+                
+            }
+        </script>
+    </body>
+</html>
