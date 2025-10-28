@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Dự báo thời tiết (CNND) — Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f1f5f9;
+      --card:#fff;
+      --muted:#6b7280;
+      --accent:#0ea5a0;
+      --danger:#ef4444;
+    }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color:#0f1724;
+      padding:36px 18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    h1{margin:0 0 18px;font-size:24px}
+    .controls{margin-bottom:18px}
+    select{
+      padding:10px 14px;
+      border-radius:10px;
+      border:2px solid #11182733;
+      font-size:16px;
+      min-width:220px;
+    }
+    .card{
+      width:100%;
+      max-width:900px;
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 6px 18px rgba(12,18,24,0.06);
+    }
+    .row{display:flex;gap:16px;flex-wrap:wrap}
+    .main{
+      flex:1 1 320px;
+      min-width:260px;
+    }
+    .side{
+      width:320px;
+      min-width:220px;
+    }
+    .big-temp{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .big-temp .t{
+      font-size:48px;
+      font-weight:700;
+    }
+    .muted{color:var(--muted);}
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      margin-top:10px;
+    }
+    .chip{
+      background:#f8fafc;
+      padding:8px 10px;
+      border-radius:8px;
+      font-size:14px;
+    }
+    .hourly{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding:8px 0;
+      margin-top:12px;
+    }
+    .hourly .h{
+      min-width:64px;
+      text-align:center;
+      padding:8px;
+      border-radius:8px;
+      background:#fbfdfe;
+      box-shadow:0 2px 6px rgba(2,6,23,0.03);
+    }
+    .forecast{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .frow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px;
+      border-radius:8px;
+      background:#fbfdfe;
+    }
+    img.icon{width:38px;height:38px;object-fit:contain}
+    .error{
+      color:var(--danger);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .loader{padding:12px;text-align:center;color:var(--muted)}
+    @media (max-width:720px){
+      .row{flex-direction:column}
+      .side{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <h1>🌤️ Dự báo thời tiết các tỉnh thành Việt Nam</h1>
+
+  <div class="controls">
+    <label for="city" class="muted">Chọn tỉnh/thành:</label>
+    <select id="city"></select>
+  </div>
+
+  <div id="out" class="card">
+    <div id="content">
+      <p class="loader">Hãy chọn một tỉnh để xem dự báo.</p>
+    </div>
+  </div>
+
+<script>
+const names = ['An Giang', 'Bình Dương', 'Bình Phước', 'Bình Thuận', 'Bình Định', 'Bạc Liêu', 'Bắc Giang', 'Bắc Kạn', 'Bắc Ninh', 'Bến Tre', 'Cao Bằng', 'Cà Mau', 'Cần Thơ', 'Điện Biên', 'Đà Nẵng', 'Đà Lạt', 'Đắk Lắk', 'Đắk Nông', 'Đồng Nai', 'Đồng Tháp', 'Gia Lai', 'Hà Nội', 'TP. Hồ Chí Minh', 'Hà Giang', 'Hà Nam', 'Hà Tĩnh', 'Hòa Bình', 'Hưng Yên', 'Hải Dương', 'Hải Phòng', 'Hậu Giang', 'Khánh Hòa', 'Kiên Giang', 'Kon Tum', 'Lai Châu', 'Long An', 'Lào Cai', 'Lâm Đồng', 'Lạng Sơn', 'Nam Định', 'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình', 'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La', 'Thanh Hóa', 'Thái Bình', 'Thái Nguyên', 'Thừa Thiên Huế', 'Tiền Giang', 'Trà Vinh', 'Tuyên Quang', 'Tây Ninh', 'Vĩnh Long', 'Vĩnh Phúc', 'Vũng Tàu', 'Yên Bái'];
+const values = ['2347719', '20070078', '20070086', '2347731', '2347730', '20070081', '20070087', '20070084', '20070088', '2347703', '2347704', '20070082', '2347732', '28301718', '20070085', '1252375', '2347720', '28301719', '2347721', '2347722', '2347733', '2347727', '2347728', '2347734', '2347741', '2347736', '2347737', '20070079', '20070080', '2347707', '28301720', '2347738', '2347723', '20070076', '2347708', '2347710', '2347740', '2347709', '2347718', '20070089', '2347742', '2347743', '2347744', '20070091', '2347745', '2347746', '2347711', '20070077', '2347712', '2347747', '2347748', '2347713', '2347715', '2347716', '20070083', '2347749', '2347717', '2347750', '2347751', '2347714', '2347752', '20070090', '2347729', '2347753'];
+
+const citySelect = document.getElementById('city');
+const out = document.getElementById('content');
+
+names.forEach((n,i)=>{
+  const o=document.createElement('option');
+  o.value=values[i];
+  o.textContent=n;
+  citySelect.appendChild(o);
+});
+
+function get(obj, path, def=null){
+  try{
+    return path.split('.').reduce((s,p)=>s && s[p], obj) ?? def;
+  }catch(e){return def;}
+}
+
+function renderData(datainfo){
+  if(!datainfo) {
+    out.innerHTML = '<div class="error">❌ Không có dữ liệu.</div>';
+    return;
+  }
+
+  const location = get(datainfo,'location') || get(datainfo,'key') || 'Không rõ';
+  const currentDate = get(datainfo,'currentDate') || get(datainfo,'date') || '';
+  const temperature = get(datainfo,'temperature') || get(datainfo,'temp') || '-';
+  const feels_like = get(datainfo,'feels_like') || get(datainfo,'feelsLike') || null;
+  const humidity = get(datainfo,'humidity') || '-';
+  const wind = get(datainfo,'wind') || get(datainfo,'windString') || '-';
+  const sunrise = get(datainfo,'sunrise') || '-';
+  const sunset = get(datainfo,'sunset') || '-';
+  const status = get(datainfo,'status') || get(datainfo,'status_text') || '-';
+  const hourly = get(datainfo,'hourly_temperature') || get(datainfo,'hourly') || [];
+  const forecast = get(datainfo,'forecast') || [];
+
+  const mainIcon = get(datainfo,'icon') || (hourly[0] && hourly[0].shadow_icon) || '';
+
+  let html = `
+    <div class="row">
+      <div class="main">
+        <div class="big-temp">
+          <div style="width:72px">
+            ${ mainIcon ? `<img src="${mainIcon}" class="icon" alt="icon">` : '' }
+          </div>
+          <div>
+            <div style="display:flex;align-items:baseline;gap:12px">
+              <div class="t">${temperature}°</div>
+              <div>
+                <div style="font-weight:600">${location}</div>
+                <div class="muted">${status} · ${currentDate}</div>
+              </div>
+            </div>
+
+            <div class="info-grid" style="margin-top:12px">
+              <div class="chip">Feels: ${feels_like ?? '-'}</div>
+              <div class="chip">Humidity: ${humidity}%</div>
+              <div class="chip">Wind: ${wind}</div>
+              <div class="chip">Sunrise: ${sunrise} · Sunset: ${sunset}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="muted" style="font-weight:600;margin-bottom:8px">Hourly</div>
+          <div class="hourly">
+  `;
+
+  if(Array.isArray(hourly) && hourly.length){
+    const limit = Math.min(hourly.length, 24);
+    for(let i=0;i<limit;i++){
+      const h = hourly[i];
+      const t = h.time ?? h.hour ?? h.hour_text ?? '';
+      const temp = h.temperature ?? h.temp ?? '-';
+      const sIcon = h.shadow_icon ?? h.icon ?? '';
+      const sText = h.status ?? '';
+      html += `<div class="h"><div class="muted" style="font-size:12px">${t}</div>
+               ${ sIcon ? `<div style="margin:6px 0"><img src="${sIcon}" class="icon" alt=""></div>` : '' }
+               <div style="font-weight:700">${temp}°</div>
+               <div class="muted" style="font-size:12px">${sText}</div></div>`;
+    }
+  } else {
+    html += `<div class="muted">Không có dữ liệu hourly</div>`;
+  }
+
+  html += `</div></div></div>`; 
+
+  
+  html += `<div class="side">
+            <div style="font-weight:700;margin-bottom:8px">Dự báo nhiều ngày</div>
+            <div class="forecast">`;
+
+  if(Array.isArray(forecast) && forecast.length){
+    for(const f of forecast){
+      const fdate = f.date ?? f.forecastDate ?? '';
+      const hi = f.high ?? f.max ?? f.high_temp ?? '-';
+      const lo = f.low ?? f.min ?? f.low_temp ?? '-';
+      const fStatus = f.status ?? f.text ?? '';
+      const fIcon = f.shadow_icon ?? f.precipitation_icon ?? '';
+
+      html += `<div class="frow">
+                <div style="display:flex;gap:10px;align-items:center">
+                  ${ fIcon ? `<img src="${fIcon}" class="icon" alt="">` : '' }
+                  <div>
+                    <div style="font-weight:600">${fdate}</div>
+                    <div class="muted" style="font-size:13px">${fStatus}</div>
+                  </div>
+                </div>
+                <div class="muted">${hi}° / ${lo}°</div>
+               </div>`;
+    }
+  } else {
+    html += `<div class="muted">Không có dữ liệu forecast</div>`;
+  }
+
+  html += `</div></div></div>`;
+
+  out.innerHTML = html;
+}
+
+async function loadWeather(id){
+  out.innerHTML = '<p class="loader">⏳ Đang tải dữ liệu thời tiết...</p>';
+  const url = `https://utils3.cnnd.vn/ajax/weatherinfo/${id}.htm`;
+
+  const tryDirect = async ()=>{
+    const r = await fetch(url, {cache:'no-store'});
+    const txt = await r.text();
+    try {
+      return JSON.parse(txt);
+    } catch(e){
+      throw e;
+    }
+  };
+
+  const tryProxy = async ()=>{
+    const proxyBase = 'https://api.allorigins.win/raw?url=';
+    const proxyUrl = proxyBase + encodeURIComponent(url);
+    const r = await fetch(proxyUrl, {cache:'no-store'});
+    const txt = await r.text();
+    return JSON.parse(txt);
+  }
+
+  // try direct fetch first; if fails (CORS/network/parse), fallback to proxy
+  try {
+    let json;
+    try {
+      json = await tryDirect();
+    } catch(eDirect) {
+      console.warn('Direct fetch failed, trying proxy...', eDirect);
+      json = await tryProxy();
+    }
+
+    let datainfo = get(json,'Data.data.datainfo') 
+                || get(json,'Data.data') 
+                || get(json,'data.datainfo')
+                || get(json,'data')
+                || get(json,'datainfo')
+                || json;
+
+    if(typeof datainfo !== 'object') {
+      datainfo = get(json,'Data') || datainfo;
+    }
+
+    renderData(datainfo);
+  } catch(err){
+    console.error(err);
+    out.innerHTML = `<div class="error">❌ Không thể tải dữ liệu thời tiết. (${err.message || err})</div>`;
+  }
+}
+
+citySelect.addEventListener('change', ()=>{
+  loadWeather(citySelect.value);
+});
+
+citySelect.selectedIndex = 9; 
+loadWeather(citySelect.value);
+
+</script>
+</body>
+</html>
