@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>Dan Tri</title>
+        <style>
+            table,th,td{
+                border:1px solid black;
+                border-collapse: collapse;
+                padding:10px;
+                margin: auto;
+                text-align:center;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Buy</th>
+                    <th>Sell</th>
+                </tr>
+            </thead>
+            <tbody id="gold">
+
+            </tbody>
+        </table>
+        <script>
+            api_dantri="https://webapi.dantri.com.vn/misc"
+        </script>
+        <script type="text/javascript">
+        var xhr =new XMLHttpRequest();
+            xhr.open("GET",api_dantri,true);
+            xhr.send();
+            xhr.onreadystatechange=function()
+            {
+                if (xhr.readyState==4 && xhr.status==200)
+                {
+                    dantriJSON=xhr.responseText;
+                    dantriObject=JSON.parse(dantriJSON);
+                    display_gold(dantriObject);
+
+                }
+                else
+                {
+                }
+            }
+        </script>
+        <script>
+            function display_gold(dantriObject){
+               // alert(dantriObject.gold.length);
+               for (i=0; i<dantriObject.golds.length;i++){
+                    gold=dantriObject.golds[i];
+
+                    tbody=document.getElementById("gold");
+                    row=document.createElement("tr");
+
+                    td_city=document.createElement("td");
+                    td_city.innerText=gold.name;
+                    row.appendChild(td_city);
+
+                    td_buy=document.createElement("td");
+                    td_buy.innerText=gold.buy;
+                    row.appendChild(td_buy);
+
+                    td_sell=document.createElement("td");
+                    td_sell.innerText=gold.sell;
+                    row.appendChild(td_sell);
+
+                    tbody.appendChild(row);
+               }
+            }
+            
+        </script>
+    </body>
+</html>

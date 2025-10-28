@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>Book Covers</title>
+        <style>
+            table{
+                width:"80%";
+                border-collapse: collapse;
+                margin: 20px auto;
+            }
+            tr, th, td{
+                border: 1px solid black;
+                padding: 10px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <table border="1">
+            <caption>List of Book Covers</caption>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                    <th>Cover</th>
+                </tr>
+            </thead>
+            <tbody id="book_detail">
+            </tbody>
+        </table>
+        <script>
+            var xhr =new XMLHttpRequest();
+            xhr.open("GET","datasets/books_cover.xml",true);
+            xhr.send();
+            xhr.onreadystatechange=function(){
+                if (xhr.readyState==4 && xhr.status==200)
+                {
+                var xmlDoc = xhr.responseXML;
+                var books = xmlDoc.getElementsByTagName("book");
+                for (var i = 0; i < books.length; i++) {
+                    book = books[i];
+
+                    var title = book.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+                    var author = book.getElementsByTagName("author")[0].childNodes[0].nodeValue;
+                    var year = book.getElementsByTagName("year")[0].childNodes[0].nodeValue;
+                    var cover = book.getElementsByTagName("cover")[0].childNodes[0].nodeValue;
+
+                    var tbody = document.getElementById("book_detail");
+                    var row = document.createElement("tr");
+
+                    var td_title = document.createElement("td");
+                    td_title.innerText = title;
+                    row.appendChild(td_title);
+
+                    var td_author = document.createElement("td");
+                    td_author.innerText = author;
+                    row.appendChild(td_author);
+
+                    var td_year = document.createElement("td");
+                    td_year.innerText = year;
+                    row.appendChild(td_year);
+
+                    var td_cover = document.createElement("td");
+                    var img = document.createElement("img");
+                    img.src = 'images/'+ cover;
+                    img.alt = title;
+                    img.style.width = "100px";
+                    td_cover.appendChild(img);
+                    row.appendChild(td_cover);
+
+                
+
+                    var img_detail = document.createElement("img");
+                    img_detail.src = 'images/ic_edit.png';
+                    td_action=document.createElement("td");
+                    bookjson={
+                        "title":title,
+                        "author":author,
+                        "year":year,
+                        "cover":cover
+                    };
+                    img_detail.selected_book=bookjson
+                    img_detail.onclick=function(){
+                        stringJson=JSON.stringify(this.selected_book);
+                        localStorage.setItem("selected_book",stringJson);
+                        window.open("book_detail.html","_self");
+                    };
+                    td_action.appendChild(img_detail);
+                    row.appendChild(td_action);
+
+                    img_delete = document.createElement("img");
+                    img_delete.src = 'images/ic_delete.png';
+                    td_action=document.createElement("td");
+                    td_action.appendChild(img_delete);
+                    row.appendChild(td_action);
+                    img_delete.parent_row=row
+                    img_delete.onclick=function(){
+                    if (confirm("Are you sure to delete this book?")){
+                        tbody.removeChild(this.parent_row);
+                    }
+                    };
+                    tbody.appendChild(row);
+                 
+                }
+            }}
+        </script>
+        </body>
+</html>

@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Thoi tiet</title>
+        <style>
+            table,th,td{
+                border:1px solid black;
+                border-collapse: collapse;
+                padding:10px;
+                margin: auto;
+                text-align:center;
+            }
+            </style>
+    </head>
+    <body>
+        <div id="Weather"></div>
+        <table>
+            <caption>Thoi tiet hom nay</caption>
+            <tr>
+                <th>City</th>
+                <th>Temperature</th>
+                <th>Condition</th>
+                <th>Icon</th>
+            </tr>
+            <tbody id="weather_data">
+            </tbody>
+        </table>
+        <script>
+            api_weather="https://webapi.dantri.com.vn/misc"
+        </script>
+        <script>
+             var xhr =new XMLHttpRequest();
+            xhr.open("GET",api_weather,true);
+            xhr.send();
+            xhr.onreadystatechange=function()
+            {
+                if (xhr.readyState==4 && xhr.status==200)
+                {
+                    dantriJSON=xhr.responseText;
+                    dantriObject=JSON.parse(dantriJSON);
+                    weathers=dantriObject.weathers;
+                    display_weather(weathers);
+
+                }
+                else
+                {
+                }
+            }
+        </script>
+        <script>
+            function display_weather(weathers){
+               for (i=0; i<weathers.length;i++){
+                    weather=weathers[i];
+
+                    tbody=document.getElementById("weather_data");
+                    row=document.createElement("tr");
+
+                    td_city=document.createElement("td");
+                    td_city.innerText=weather.name;
+                    row.appendChild(td_city);
+
+                    td_temperature=document.createElement("td");
+                    td_temperature.innerText=weather.temperature;
+                    row.appendChild(td_temperature);
+
+                    td_condition=document.createElement("td");
+                    td_condition.innerText=weather.clouds;
+                    row.appendChild(td_condition);
+
+                    td_icon=document.createElement("td");
+                    var img = document.createElement("img");
+                    img.src = "https://openweathermap.org/img/wn/" + weather.icon + "@2x.png";
+                    img.alt = weather.condition;
+                    img.style.width = "50px";
+                    td_icon.appendChild(img);
+                    row.appendChild(td_icon);
+
+                    tbody.appendChild(row);
+               }
+            }
+        </script>
+    </body>
+</html>

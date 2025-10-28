@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Book Detail</title>
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td id="title"></td>
+            </tr>
+            <tr>
+                <td>Author</td>
+                <td id="author"></td>
+            </tr>
+            <tr>
+                <td>Year</td>
+                <td id="year"></td>
+            </tr>
+            <tr>
+                <td>Cover</td>
+                <td>
+                    <img id="cover" width="250" height="250"/>
+                </td>
+            </tr>
+        </table>
+        <script>
+            jsonString=localStorage.getItem("selected_book");
+            jsonObject=JSON.parse(jsonString);
+            title.innerText=jsonObject.title;
+            author.innerText=jsonObject.author;
+            year.innerText=jsonObject.year;
+            cover.src='images/'+jsonObject.cover;
+        </script>
+    </body>
+</html>

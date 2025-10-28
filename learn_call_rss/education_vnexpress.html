@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hub RSS — VnExpress Pháp Luật</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa7b2;--accent:#06b6d4}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial;margin:0;min-height:100vh;background:linear-gradient(180deg,#071026 0%,#071827 60%);color:#e6eef3}
+    header{padding:20px;display:flex;gap:12px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05)}
+    header h1{font-size:18px;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
+    input[type=search]{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:inherit;min-width:240px}
+    select,button{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:inherit;cursor:pointer}
+    main{padding:18px;max-width:1100px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:12px;display:flex;flex-direction:column;min-height:180px;box-shadow:0 6px 18px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.04)}
+    .thumb{height:140px;border-radius:8px;overflow:hidden;background:#111}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .title{font-weight:600;margin:8px 0 6px}
+    .excerpt{color:var(--muted);font-size:14px;flex:1}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:8px;margin-top:12px}
+    a.btn{padding:8px 10px;border-radius:10px;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.05);background:transparent;font-size:14px}
+    footer{padding:18px;text-align:center;color:var(--muted);font-size:14px}
+    .topline{display:flex;gap:12px;align-items:center}
+    .pill{background:rgba(255,255,255,0.06);padding:6px 10px;border-radius:999px;font-size:13px}
+    @media (max-width:520px){header{flex-direction:column;align-items:flex-start}.controls{width:100%;flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Hub RSS — VnExpress / Pháp Luật</h1>
+      <div class="topline">
+        <span class="pill">Source: vnexpress.net</span>
+        <span class="pill" id="last-updated">Đang tải...</span>
+      </div>
+    </div>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Tìm tiêu đề hoặc nội dung... (Enter để lọc)" />
+      <select id="sort">
+        <option value="new">Mới nhất</option>
+        <option value="old">Cũ nhất</option>
+      </select>
+      <button id="refresh">Làm mới</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="list"></div>
+    <div id="status" style="margin-top:18px;text-align:center;color:var(--muted)"></div>
+  </main>
+
+  <footer>
+    Hiển thị RSS từ:
+    <a href="https://vnexpress.net/rss/phap-luat.rss" target="_blank" style="color:var(--accent)">vnexpress.net/rss/phap-luat.rss</a><br>
+    Nếu trình duyệt chặn CORS, hãy chạy file này bằng máy chủ cục bộ (vd: <code>python -m http.server</code>).
+  </footer>
+
+  <script>
+    const RSS_URL = 'https://vnexpress.net/rss/phap-luat.rss';
+    const PROXY = 'https://api.allorigins.win/get?url=';
+
+    const $list = document.getElementById('list');
+    const $status = document.getElementById('status');
+    const $q = document.getElementById('q');
+    const $sort = document.getElementById('sort');
+    const $refresh = document.getElementById('refresh');
+    const $lastUpdated = document.getElementById('last-updated');
+
+    let items = [];
+
+    function fmtDate(d) {
+      try {
+        const dt = new Date(d);
+        return dt.toLocaleString('vi-VN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch {
+        return d;
+      }
+    }
+
+    function excerptFrom(text, max = 180) {
+      if (!text) return '';
+      text = text.replace(/\\s+/g, ' ').replace(/(<([^>]+)>)/gi, '');
+      return text.length > max ? text.slice(0, max) + '...' : text;
+    }
+
+    function parseImageFromItem(item) {
+      const media = item.querySelector('media\\:content, enclosure');
+      if (media?.getAttribute('url')) return media.getAttribute('url');
+      const desc = item.querySelector('description')?.textContent || '';
+      const m = desc.match(/<img[^>]+src=[\"']([^\"']+)[\"']/i);
+      return m ? m[1] : null;
+    }
+
+    function render() {
+      $list.innerHTML = '';
+      if (!items.length) {
+        $status.textContent = 'Không có tin hoặc đang tải...';
+        return;
+      }
+
+      const q = $q.value.trim().toLowerCase();
+      const s = $sort.value;
+      let out = items.filter(it =>
+        (it.title + ' ' + it.description).toLowerCase().includes(q)
+      );
+      out.sort((a, b) =>
+        s === 'new'
+          ? new Date(b.pubDate) - new Date(a.pubDate)
+          : new Date(a.pubDate) - new Date(b.pubDate)
+      );
+
+      $status.textContent = `Hiển thị ${out.length} tin`;
+
+      for (const it of out) {
+        const el = document.createElement('article');
+        el.className = 'card';
+
+        if (it.image) {
+          const thumb = document.createElement('div');
+          thumb.className = 'thumb';
+          thumb.innerHTML = `<img src=\"${it.image}\" alt=\"thumb\">`;
+          el.appendChild(thumb);
+        }
+
+        el.innerHTML += `
+          <div class=\"title\"><a href=\"${it.link}\" target=\"_blank\" style=\"color:inherit;text-decoration:none\">${it.title}</a></div>
+          <div class=\"excerpt\">${excerptFrom(it.description)}</div>
+          <div class=\"meta\"><span class=\"small\">${it.author || ''}</span><span class=\"small\">${fmtDate(it.pubDate)}</span></div>
+          <div class=\"actions\">
+            <a class=\"btn\" href=\"${it.link}\" target=\"_blank\">Đọc gốc</a>
+            <a class=\"btn copy\" href=\"#\">Sao chép link</a>
+          </div>
+        `;
+
+        el.querySelector('.copy').addEventListener('click', e => {
+          e.preventDefault();
+          navigator.clipboard.writeText(it.link);
+          e.target.textContent = 'Đã sao chép';
+          setTimeout(() => (e.target.textContent = 'Sao chép link'), 1200);
+        });
+
+        $list.appendChild(el);
+      }
+    }
+
+    async function fetchRSS() {
+      $status.textContent = 'Đang tải RSS...';
+      try {
+        const res = await fetch(PROXY + encodeURIComponent(RSS_URL));
+        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+
+        const data = await res.json();
+        const xml = new DOMParser().parseFromString(data.contents, 'application/xml');
+        const itemsXML = xml.querySelectorAll('item');
+        const updated = xml.querySelector('lastBuildDate')?.textContent || new Date();
+
+        $lastUpdated.textContent = 'Cập nhật: ' + fmtDate(updated);
+
+        items = Array.from(itemsXML).map(node => ({
+          title: node.querySelector('title')?.textContent || '',
+          link: node.querySelector('link')?.textContent || '',
+          description: node.querySelector('description')?.textContent || '',
+          author: node.querySelector('author')?.textContent || '',
+          pubDate: node.querySelector('pubDate')?.textContent || '',
+          image: parseImageFromItem(node)
+        }));
+
+        render();
+      } catch (err) {
+        console.error(err);
+        $status.textContent =
+          'Không thể tải RSS: ' + err.message +
+          '. Nếu bị chặn CORS, hãy mở qua server cục bộ hoặc chỉnh biến PROXY.';
+      }
+    }
+
+    // Sự kiện
+    $q.addEventListener('keypress', e => { if (e.key === 'Enter') render(); });
+    $sort.addEventListener('change', render);
+    $refresh.addEventListener('click', fetchRSS);
+
+    // Tải lần đầu
+    fetchRSS();
+  </script>
+</body>
+</html>
